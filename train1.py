@@ -44,11 +44,11 @@ print("\nLemmatization")
 print("rocks :", lemmatizer.lemmatize("rocks"))
 
 # Loading the dataset
-fn_data = r"C:\Users\Inspiron 7000\Documents\pdf_parses_0.jsonl" #Rename file from "jsonl.gz" to "jsonl"
+fn_data = r"pdf_parses_0.jsonl" #Rename file from "jsonl.gz" to "jsonl"
 data_pdf = pd.read_json(fn_data, lines=True)
 data_pdf.head()
 
-fn_metadata = r"C:\Users\Inspiron 7000\Documents\metadata_0.jsonl"
+fn_metadata = r"metadata_0.jsonl"
 metadata_df = pd.read_json(fn_metadata, lines=True)
 
 print(list(metadata_df))
@@ -139,9 +139,9 @@ cal_elapsed_time(s_time)
 print("Total number of unique words loaded in Model : ", len(model.wv))
 
 # Saving the model
-#model.save(r"C:\Users\Inspiron 7000\Documents\word2vec_trained_model.model")
+#model.save(r"word2vec_trained_model.model")
 #model_file = 'imdb_word2vec_embedding.txt'
 model.wv.save_word2vec_format('w2v_model.txt')
 # Loading the model
-#model = Word2Vec.load(r"C:\Users\Inspiron 7000\Documents\word2vec_trained_model.model")
+#model = Word2Vec.load(r"word2vec_trained_model.model")
 

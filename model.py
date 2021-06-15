@@ -13,12 +13,12 @@ nltk.download('stopwords')
 nltk.download('punkt')
 
 # Load pre-trained Word2Vec model.
-#model = gensim.models.Word2Vec.load(r"C:\Users\Inspiron 7000\Documents\word2vec_trained_model.model")
+#model = gensim.models.Word2Vec.load(r"word2vec_trained_model.model")
 
 #model = gensim.models.KeyedVectors.load_word2vec_format(
-#    r"C:\Users\Inspiron 7000\Downloads\GoogleNews-vectors-negative300.bin.gz", binary=True)
+#    r"GoogleNews-vectors-negative300.bin.gz", binary=True)
 
-model = gensim.models.KeyedVectors.load_word2vec_format(datapath(r'C:\Users\Inspiron 7000\project\w2v_model.txt'), binary=False)
+model = gensim.models.KeyedVectors.load_word2vec_format(datapath(r'w2v_model.txt'), binary=False)
 
 stopwords = set(stopwords.words('english'))
 ds = Similarity(model, stopwords=stopwords)
