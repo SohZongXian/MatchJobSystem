@@ -1,1 +1,4 @@
 *.txt filter=lfs diff=lfs merge=lfs -text
+env/Lib/site-packages/tensorflow/python/*.py filter=lfs diff=lfs merge=lfs -text
+env/Lib/site-packages/tensorflow/python/*.pyd filter=lfs diff=lfs merge=lfs -text
+env/Lib/site-packages/tensorflow/python/*.pyd filter=lfs diff=lfs merge=lfs -text
