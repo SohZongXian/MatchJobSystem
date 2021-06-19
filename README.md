@@ -19,4 +19,6 @@ The demo site of this project is https://match-job-system.herokuapp.com/
 If you want to build your own match job system, you are welcome to fork this project.
 
 1. Clone this repository.
-2. [job.md](https://github.com/yejinloh/MatchJobSystem/files/6680329/job.md)
+2. Download the excel and import into your database.
+   a. https://docs.google.com/spreadsheets/d/1xPHmTxZAmj1cpAIbKlB7CjvQPHMaGnVCNebIG_8eqc0/edit?usp=sharing
+   b. 
