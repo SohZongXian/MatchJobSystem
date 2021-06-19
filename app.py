@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash
 from flask_mysqldb import MySQL
 from flask_paginate import Pagination
 from sumSimilarity import Sum
-#from model import calculateSim
+from model import calculateSim
 #from preprocessingParagraph import preProcessing
 
 app=Flask(__name__)       
@@ -86,29 +86,34 @@ def match(id):
     conn.commit()
     scopuslink = cursor.fetchall()
 
-    #result = calculateSim(de,abstract)
-
-    #for r in range(len(result)):
-    #    cursor.execute("""INSERT INTO result(JOBID,USERNAME,SIMILARITY,SCOPUSLINK) VALUES (%s,%s,%s,%s)""",(id,user[r],result[r],scopuslink[r]))
-    #    conn.commit()
-
-    #cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from test_1 WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
-    #conn.commit()
-    #result1 = cursor.fetchall()
-
-    #cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from test_2 WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
-    #conn.commit()
-    #result2 = cursor.fetchall()
-
-    #lastresult = Sum(result1,result2)
-
-    #for r in range (len(lastresult)):
-    #    cursor.execute("""INSERT INTO result(JOBID,USERNAME,SIMILARITY,SCOPUSLINK) VALUES (%s,%s,%s,%s)""",(lastresult[r][3],lastresult[r][0],lastresult[r][1],lastresult[r][2]))
-    #    conn.commit()
-
     cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from result WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
     conn.commit()
     final_result = cursor.fetchall()
+
+    if len(final_result) == 0:
+        #result = calculateSim(de,abstract)
+        
+        #for r in range(len(result)):
+        #    cursor.execute("""INSERT INTO result(JOBID,USERNAME,SIMILARITY,SCOPUSLINK) VALUES (%s,%s,%s,%s)""",(id,user[r],result[r],scopuslink[r]))
+        #    conn.commit()
+
+        #cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from test_1 WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
+        #conn.commit()
+        #result1 = cursor.fetchall()
+
+        #cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from test_2 WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
+        #conn.commit()
+        #result2 = cursor.fetchall()
+
+        #lastresult = Sum(result1,result2)
+
+        #for r in range (len(lastresult)):
+        #    cursor.execute("""INSERT INTO result(JOBID,USERNAME,SIMILARITY,SCOPUSLINK) VALUES (%s,%s,%s,%s)""",(lastresult[r][3],lastresult[r][0],lastresult[r][1],lastresult[r][2]))
+        #    conn.commit()
+
+        cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from result WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
+        conn.commit()
+        final_result = cursor.fetchall()
 
     #cursor.execute("INSERT INTO test (USERNAME,SIMILARITY) %r;" % (tuple(final_result),))
 
@@ -139,6 +144,21 @@ def show(id):
     conn.commit()
     user = cursor.fetchall()
 
+    cursor.execute("SELECT DESCRIPTION from job WHERE ID = %s",[id])
+    conn.commit()
+    description = cursor.fetchall()
+    description = description[0]
+    descriptionj = ''.join([str(x) for t in description for x in t])
+    de = descriptionj
+
+    cursor.execute("SELECT ABSTRACT from user_1")
+    conn.commit()
+    abstract = cursor.fetchall()
+
+    cursor.execute("SELECT LINK from user_1")
+    conn.commit()
+    scopuslink = cursor.fetchall()
+
     if request.method == 'GET':
         entries = request.args.get('entries')
         conn = mysql.connection
@@ -162,6 +182,31 @@ def show(id):
         cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK from result WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
         conn.commit()
         final_result = cursor.fetchall()
+
+        if len(final_result) == 0:
+            result = calculateSim(de,abstract)
+        
+            for r in range(len(result)):
+                cursor.execute("""INSERT INTO result(JOBID,USERNAME,SIMILARITY,SCOPUSLINK) VALUES (%s,%s,%s,%s)""",(id,user[r],result[r],scopuslink[r]))
+                conn.commit()
+
+            cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from test_1 WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
+            conn.commit()
+            result1 = cursor.fetchall()
+
+            cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from test_2 WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
+            conn.commit()
+            result2 = cursor.fetchall()
+
+            lastresult = Sum(result1,result2)
+
+            for r in range (len(lastresult)):
+                cursor.execute("""INSERT INTO result(JOBID,USERNAME,SIMILARITY,SCOPUSLINK) VALUES (%s,%s,%s,%s)""",(lastresult[r][3],lastresult[r][0],lastresult[r][1],lastresult[r][2]))
+                conn.commit()
+
+            cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from result WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
+            conn.commit()
+            final_result = cursor.fetchall()
 
         total = len(final_result)
 
