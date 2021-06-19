@@ -1,7 +1,7 @@
 # MatchJobSystem
 This project is a system to match job with academic staff by using past achievements or proven experiences. A pretrained Word2vec model is used to find the matching rate between the job and the academic staff.
 
-# What can this project do
+  # What can this project do
 1. Searching job by input term (e.g.: java)
 2. Job list related with the inputted term will be listed out.
 3. Show the job description by clicking the "🔽" button.
