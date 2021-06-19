@@ -18,7 +18,7 @@ nltk.download('punkt')
 #model = gensim.models.KeyedVectors.load_word2vec_format(
 #    r"GoogleNews-vectors-negative300.bin.gz", binary=True)
 
-model = gensim.models.KeyedVectors.load_word2vec_format(datapath(r'C:\Users\Inspiron 7000\system\MatchJobSystem\w2v_model.txt'), binary=False)
+model = gensim.models.KeyedVectors.load_word2vec_format(datapath(r'w2v_model.txt'), binary=False)
 
 stopwords = set(stopwords.words('english'))
 ds = Similarity(model, stopwords=stopwords)
