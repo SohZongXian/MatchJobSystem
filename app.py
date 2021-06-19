@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash
 from flask_mysqldb import MySQL
 from flask_paginate import Pagination
-from sumSimilarity import Sum
+#from sumSimilarity import Sum
 from model import calculateSim
 #from preprocessingParagraph import preProcessing
 
@@ -190,20 +190,6 @@ def show(id):
                 cursor.execute("""INSERT INTO result(JOBID,USERNAME,SIMILARITY,SCOPUSLINK) VALUES (%s,%s,%s,%s)""",(id,user[r],result[r],scopuslink[r]))
                 conn.commit()
 
-            cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from test_1 WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
-            conn.commit()
-            result1 = cursor.fetchall()
-
-            cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from test_2 WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
-            conn.commit()
-            result2 = cursor.fetchall()
-
-            lastresult = Sum(result1,result2)
-
-            for r in range (len(lastresult)):
-                cursor.execute("""INSERT INTO result(JOBID,USERNAME,SIMILARITY,SCOPUSLINK) VALUES (%s,%s,%s,%s)""",(lastresult[r][3],lastresult[r][0],lastresult[r][1],lastresult[r][2]))
-                conn.commit()
-
             cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from result WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
             conn.commit()
             final_result = cursor.fetchall()
@@ -213,7 +199,7 @@ def show(id):
         page = request.args.get('page', 1, type=int)
         offset = page*limit - limit
 
-        cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK from result WHERE JOBID= %s ORDER BY USERNAME LIMIT %s OFFSET %s",(id,limit, offset))
+        cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK from result WHERE JOBID= %s ORDER BY SIMILARITY DESC LIMIT %s OFFSET %s",(id,limit, offset))
         conn.commit()
         dataa = cursor.fetchall()
 
