@@ -13,3 +13,10 @@ This project is a system to match job with academic staff by using past achievem
 9. Search academic staff by inputting the name.
 10. Redirect to the selected job by clicking the job name.
 11. Redirect to the scopuslink of selected academic staff by clicking the academic staff name.
+
+## Technical Details
+The demo site of this project is https://match-job-system.herokuapp.com/
+If you want to build your own match job system, you are welcome to fork this project.
+
+1. Clone this repository.
+2. [job.md](https://github.com/yejinloh/MatchJobSystem/files/6680329/job.md)
