@@ -185,7 +185,17 @@
         }
 
         #keywords tbody tr td.lalignc {
-            text-align: 50px;
+            text-align: center;
+        }
+
+        #keywords tbody tr td.lalignd {
+            text-align: center;
+        }
+        #keywords tbody tr td.laligne {
+            text-align: center;
+        }
+        #keywords tbody tr td.lalignf {
+            text-align: center;
         }
 
         .box {
@@ -274,14 +284,20 @@
                 <thead>
                     <tr>
                         <th><span>Academic Staff</span></th>
-                        <th><span>Matching Rate</span></th>
+                        <th><span>Average Similarity</span></th>
+                        <th><span>Matching Variance</span></th>
+                        <th><span>Similarity Graph</span></th>
+                        <th><span>Variance Graph</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for row in dataa %}
                     <tr>
-                        <td class="lalignc"><a href="{{ row[2] }}" ; target="_blank">{{ row[0] }}</a></td>
-                        <td class="lalign">{{ row[1] }}%</td>
+                        <td class="lalignc">{{ row[0] }}</a></td>
+                        <td class="lalign">{{ row[1] }}</a></td>
+                        <td class="lalignd">{{ row[3] }}</a></td>
+                        <td class="laligne"><img id="bigpic" src="{{ row[2] }}" width="250" height="200" style="vertical-align:middle;border:5px solid black"></td>
+                        <td class="lalignf"><img id="bigpic" src="{{ row[4] }}" width="250" height="200" style="vertical-align:middle;border:5px solid black"></td>
                     </tr>
                     {% endfor %}
                 </tbody>

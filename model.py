@@ -1,5 +1,5 @@
 from similarity import Similarity
-from keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.text import Tokenizer
 from gensim.models import Word2Vec
 from gensim.models import KeyedVectors
 from gensim.test.utils import datapath
@@ -18,7 +18,7 @@ nltk.download('punkt')
 #model = gensim.models.KeyedVectors.load_word2vec_format(
 #    r"GoogleNews-vectors-negative300.bin.gz", binary=True)
 
-model = gensim.models.KeyedVectors.load_word2vec_format(datapath(r'w2v_model.txt'), binary=False)
+model = gensim.models.KeyedVectors.load_word2vec_format(datapath("D:\Development\Python\MatchJobSystem\w2v_model.txt"), binary=False)
 
 stopwords = set(stopwords.words('english'))
 ds = Similarity(model, stopwords=stopwords)

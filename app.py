@@ -1,3 +1,4 @@
+from statistics import variance
 from flask import Flask, render_template, request, flash
 from flask_mysqldb import MySQL
 from flask_paginate import Pagination
@@ -7,11 +8,11 @@ from model import calculateSim
 
 app=Flask(__name__)       
 
-app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'project'
-app.config['SECRET_KEY'] = 'something only you know'
+app.config['MYSQL_PASSWORD'] = '1234'
+app.config['MYSQL_DB'] = 'new_schema'
+# app.config['SECRET_KEY'] = 'something only you know'
  
 mysql = MySQL()
 mysql.init_app(app)
@@ -122,8 +123,8 @@ def match(id):
 @app.route('/job/match/<id>/show-in-pagination',methods = ['POST', 'GET'])
 
 def show(id):
-    entries = 5
-    limit = 5
+    entries = 1
+    limit = 1
     conn = mysql.connection
     cursor = conn.cursor()
     cursor.execute("SELECT NAME from job WHERE ID = %s",[id])
@@ -140,7 +141,7 @@ def show(id):
     joblinkj = ''.join([str(x) for t in joblinka for x in t])
     joblink = joblinkj
 
-    cursor.execute("SELECT NAME from user_1")
+    cursor.execute("SELECT CANDIDATE from candidate")
     conn.commit()
     user = cursor.fetchall()
 
@@ -151,13 +152,13 @@ def show(id):
     descriptionj = ''.join([str(x) for t in description for x in t])
     de = descriptionj
 
-    cursor.execute("SELECT ABSTRACT from user_1")
+    cursor.execute("SELECT AVERAGE_SIMILARITY from candidate")
     conn.commit()
-    abstract = cursor.fetchall()
+    avg_sim = cursor.fetchall()
 
-    cursor.execute("SELECT LINK from user_1")
+    cursor.execute("SELECT VARIANCE from candidate")
     conn.commit()
-    scopuslink = cursor.fetchall()
+    variance = cursor.fetchall()
 
     if request.method == 'GET':
         entries = request.args.get('entries')
@@ -179,27 +180,27 @@ def show(id):
         if entries == 'all':
             limit = 66
 
-        cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK from result WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
+        cursor.execute("SELECT * FROM candidate")
         conn.commit()
         final_result = cursor.fetchall()
 
-        if len(final_result) == 0:
-            result = calculateSim(de,abstract)
+        # if len(final_result) == 0:
+        #     result = calculateSim(de,abstract)
         
-            for r in range(len(result)):
-                cursor.execute("""INSERT INTO result(JOBID,USERNAME,SIMILARITY,SCOPUSLINK) VALUES (%s,%s,%s,%s)""",(id,user[r],result[r],scopuslink[r]))
-                conn.commit()
+        #     for r in range(len(result)):
+        #         cursor.execute("""INSERT INTO result(JOBID,USERNAME,SIMILARITY,SCOPUSLINK) VALUES (%s,%s,%s,%s)""",(id,user[r],result[r],scopuslink[r]))
+        #         conn.commit()
 
-            cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from result WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
-            conn.commit()
-            final_result = cursor.fetchall()
+        #     cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK,JOBID from result WHERE JOBID= %s ORDER BY SIMILARITY DESC",[id])
+        #     conn.commit()
+        #     final_result = cursor.fetchall()
 
         total = len(final_result)
 
         page = request.args.get('page', 1, type=int)
         offset = page*limit - limit
 
-        cursor.execute("SELECT USERNAME,SIMILARITY,SCOPUSLINK from result WHERE JOBID= %s ORDER BY SIMILARITY DESC LIMIT %s OFFSET %s",(id,limit, offset))
+        cursor.execute("SELECT * from candidate LIMIT %s OFFSET %s",(limit, offset))
         conn.commit()
         dataa = cursor.fetchall()
 
